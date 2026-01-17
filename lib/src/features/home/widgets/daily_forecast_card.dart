@@ -3,11 +3,35 @@ import 'package:flutter/material.dart';
 class DailyForecast extends StatelessWidget {
   const DailyForecast({super.key});
 
+  Widget _buildForecastItem(String day, IconData icon, String tempRange) {
+    return Card(
+      color: const Color.fromARGB(255, 49, 52, 56),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Text(day),
+            const SizedBox(height: 8),
+            Icon(icon),
+            const SizedBox(height: 8),
+            Text(tempRange),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -24,101 +48,19 @@ class DailyForecast extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                        
-                          children: [
-                            const Text("Mon"),
-                            const SizedBox(height: 8),
-                            const Icon(Icons.wb_sunny),
-                            const SizedBox(height: 8),
-                            const Text("26° / 18°"),
-                          ],
-                        ),
-                      )
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                        
-                          children: [
-                            const Text("Mon"),
-                            const SizedBox(height: 8),
-                            const Icon(Icons.wb_sunny),
-                            const SizedBox(height: 8),
-                            const Text("26° / 18°"),
-                          ],
-                        ),
-                      )
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                        
-                          children: [
-                            const Text("Mon"),
-                            const SizedBox(height: 8),
-                            const Icon(Icons.wb_sunny),
-                            const SizedBox(height: 8),
-                            const Text("26° / 18°"),
-                          ],
-                        ),
-                      )
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                        
-                          children: [
-                            const Text("Mon"),
-                            const SizedBox(height: 8),
-                            const Icon(Icons.wb_sunny),
-                            const SizedBox(height: 8),
-                            const Text("26° / 18°"),
-                          ],
-                        ),
-                      )
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                        
-                          children: [
-                            const Text("Mon"),
-                            const SizedBox(height: 8),
-                            const Icon(Icons.wb_sunny),
-                            const SizedBox(height: 8),
-                            const Text("26° / 18°"),
-                          ],
-                        ),
-                      )
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            const Text("Mon"),
-                            const SizedBox(height: 8),
-                            const Icon(Icons.wb_sunny),
-                            const SizedBox(height: 8),
-                            const Text("26° / 18°"),
-                          ],
-                        ),
-                      )
-                    ),
-                
+                    _buildForecastItem("Sun", Icons.wb_sunny, "26° / 18°"),
+                    _buildForecastItem("Mon", Icons.cloudy_snowing, "26° / 18°"),
+                    _buildForecastItem("Tue", Icons.cloud, "26° / 18°"),
+                    _buildForecastItem("Wed", Icons.sunny_snowing, "26° / 18°"),
+                    _buildForecastItem("Thu", Icons.wb_sunny, "26° / 18°"),
+                    _buildForecastItem("Fri", Icons.cloud_sync, "26° / 18°"),
+                    _buildForecastItem("Sat", Icons.wb_sunny, "26° / 18°"),
                   ],
                 ),
               ),

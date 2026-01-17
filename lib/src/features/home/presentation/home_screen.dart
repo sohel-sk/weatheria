@@ -15,6 +15,15 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Nagpur, Maharashtra"),
         actions: [
           IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LocationSearch()),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
@@ -23,6 +32,13 @@ class HomeScreen extends StatelessWidget {
               );
             },
           ),
+          IconButton(
+            onPressed: () {
+              //
+            },
+          icon: const Icon(Icons.refresh),
+          ),
+          
         ],
       ),
       body: ListView(
