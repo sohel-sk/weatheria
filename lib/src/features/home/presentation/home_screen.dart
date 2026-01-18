@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weatheria/src/features/search/presentation/location_search.dart';
+import 'package:weatheria/src/features/search/presentation/location_select.dart';
 import 'package:weatheria/src/features/home/widgets/weather_header.dart';
 import '../widgets/current_condition_card.dart';
 import '../widgets/hourly_forecast_card.dart';
