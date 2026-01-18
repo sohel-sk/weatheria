@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weatheria/src/viewmodels/weatheria_view_model.dart';
 
 class CurrentConditionsCard extends StatelessWidget {
   const CurrentConditionsCard({super.key});
@@ -14,8 +16,7 @@ class CurrentConditionsCard extends StatelessWidget {
           padding: const EdgeInsets.only(top: 5, bottom: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:  [
-              // Icon(Icons.energy_savings_leaf, color: Colors.white),
+            children: [
               Icon(icon, color: Colors.white),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -23,12 +24,15 @@ class CurrentConditionsCard extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
                   ),
-                  SizedBox(height: 1),
+                  const SizedBox(height: 1),
                   Text(
                     value,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -44,6 +48,14 @@ class CurrentConditionsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<WeatheriaViewModel>();
+    final weather = vm.weatherData;
+
+    // 🔒 SAFE GUARD — prevents rebuild crashes
+    if (weather == null ) {
+      return const SizedBox();
+    }
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40),
@@ -60,12 +72,36 @@ class CurrentConditionsCard extends StatelessWidget {
             childAspectRatio: 1.75,
           ),
           children: [
-            _item('AQI', '42',Icons.safety_check_rounded),
-            _item('UV Index', 'low', Icons.wb_sunny),
-            _item('Wind', '15 km/h',Icons.air),
-            _item('Pressure', '1015 hPa', Icons.speed),
-            _item('Humidity', '78%', Icons.water_drop),
-            _item('Dew Point', '18°', Icons.water_drop),
+            _item(
+              'AQI',
+              '114', // e.g. "Good", "Moderate"
+              Icons.safety_check_rounded,
+            ),
+            _item(
+              'UV Index',
+              weather.uvIndex.toString(),
+              Icons.wb_sunny,
+            ),
+            _item(
+              'Wind',
+              '${weather.windSpeed} km/h',
+              Icons.air,
+            ),
+            _item(
+              'Pressure',
+              '${weather.pressure.round()} hPa',
+              Icons.speed,
+            ),
+            _item(
+              'Humidity',
+              '${weather.humidity}%',
+              Icons.water_drop,
+            ),
+            _item(
+              'Dew Point',
+              '12°',
+              Icons.water_drop,
+            ),
           ],
         ),
       ),
