@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:weatheria/src/core/model/weather_model.dart';
+import 'package:weatheria/src/model/weather_model.dart';
 import 'package:weatheria/src/core/constants/app_constants.dart';
 final String _apiKey = ApiConstants.apiKey;
 final String _baseUrlWeather = ApiConstants.baseUrlWeather;
@@ -8,11 +8,11 @@ class WeatherService {
 
   Future<WeatherModel> fetchCurrentConditions({
     required double lat,
-    required double lng,
+    required double lon,
   }) async {
     try {
       final url =
-          "$_baseUrlWeather/currentConditions:lookup?key=$_apiKey&location.latitude=$lat&location.longitude=$lng";
+          "$_baseUrlWeather/currentConditions:lookup?key=$_apiKey&location.latitude=$lat&location.longitude=$lon";
       
       final response = await http.get(Uri.parse(url));
       

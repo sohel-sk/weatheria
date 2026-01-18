@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weatheria/src/features/home/presentation/home_screen.dart';
 import 'package:weatheria/src/core/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:weatheria/src/viewmodels/weatheria_view_model.dart';
 
 void main() {
   runApp(
