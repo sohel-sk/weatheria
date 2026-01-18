@@ -25,6 +25,25 @@ class WeatheriaViewModel extends ChangeNotifier {
   bool isSeearching = false;
   List<PlaceModel> places = [];
 
+  Future<void> loadByGPS() async {
+    try {
+      appStatus = AppStatus.loading;
+      locationMode = LocationMode.gps;
+      notifyListeners();
+
+      final pos = await _repo.getCurrentPosition();
+      latitude = pos.latitude;
+      longitude = pos.longitude;
+      locationLabel = "Current Location";
+
+      await _loadAll(latitude!, longitude!);
+    } catch (e) {
+      appStatus = AppStatus.error;
+      errorMessage = e.toString();
+      notifyListeners();
+    }
+  }
+
   Future<void> _loadAll(double lat, double lon) async {
     try {
       appStatus = AppStatus.loading;
@@ -35,7 +54,7 @@ class WeatheriaViewModel extends ChangeNotifier {
         weatherData: weatherData!,
       );
       appStatus = AppStatus.success;
-
+      notifyListeners();
 
     }catch(e){
       appStatus = AppStatus.error;

@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weatheria/src/model/daily_forecast_model.dart';
 import 'package:weatheria/src/model/hourly_forecast_model.dart';
 import 'package:weatheria/src/model/weather_model.dart';

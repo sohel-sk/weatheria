@@ -62,15 +62,23 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 12),
               Text(vm.errorMessage ?? "Something went wrong"),
               const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  if (vm.locationMode == LocationMode.gps) {
+                    vm.loadByGPS();
+                  }
+                },
+                child: const Text("Retry"),
+              ),
             ],
           ),
         );
       case AppStatus.success:
         return RefreshIndicator(
           onRefresh: () async {
-            // if (vm.locationMode == LocationMode.gps) {
-            //   await vm.loadByGPS();
-            // }
+            if (vm.locationMode == LocationMode.gps) {
+              await vm.loadByGPS();
+            }
           },
           child: ListView(
             padding: const EdgeInsets.all(16),
@@ -87,9 +95,7 @@ class HomeScreen extends StatelessWidget {
           ),
         );
       case AppStatus.idle:
-        return const Center(
-          child: Text("Please select a location to view weather data."),
-        );
+        return const Center(child: Text("No data"));
     }
   }
 }
