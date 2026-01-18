@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:weatheria/src/features/home/presentation/home_screen.dart';
 import 'package:weatheria/src/core/theme.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const WeatheriaApp());
+  runApp(
+    ChangeNotifierProvider(create: (_) => WeatheriaViewModel(),
+      child: const WeatheriaApp(),
+    ),
+  );
 }
 
 class WeatheriaApp extends StatelessWidget {
