@@ -6,6 +6,11 @@ class ApiConstants {
   // example url https://weather.googleapis.com/v1/currentConditions:lookup?key=YOUR_API_KEY&location.latitude=LATITUDE&location.longitude=LONGITUDE
   static const String baseUrlPlacesSearch = 'https://maps.googleapis.com/maps/api/place';
 
+  static const String endpointCurrentConditions = '/currentConditions:lookup';
+  static const String endpointHourlyForecast = '/hourlyForecast:lookup';
+  static const String endpointDailyForecast = '/dailyForecast:lookup';
+  static const String baseUrlGeocode = 'https://maps.googleapis.com/maps/api/geocode/json';
+
   // Get API key from environment variables or fallback to embedded key for demo
   static String get apiKey {
     return dotenv.env['KEY'] ?? 'YOUR_FALLBACK_API_KEY';

@@ -16,7 +16,9 @@ class WeatheriaRepository {
 
   Future fetchCurrentWeather(double lat, double lon) =>
       _weatherService.fetchCurrentConditions(lat: lat, lon: lon);
-  
+
+  Future getCityName(double lat, double log) =>
+      _locationService.getCityFromCoordinates(lat, log);
 
   Future saveCache({required WeatherModel weatherData}) => _cache.saveAll(
     weather: weatherData,

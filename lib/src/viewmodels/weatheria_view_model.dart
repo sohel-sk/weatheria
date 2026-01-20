@@ -7,7 +7,6 @@ import 'package:weatheria/src/model/daily_forecast_model.dart';
 import 'package:weatheria/src/repositories/weatheria_repository.dart';
 
 class WeatheriaViewModel extends ChangeNotifier {
-
   final WeatheriaRepository _repo = WeatheriaRepository();
 
   AppStatus appStatus = AppStatus.idle;
@@ -32,9 +31,9 @@ class WeatheriaViewModel extends ChangeNotifier {
       notifyListeners();
 
       final pos = await _repo.getCurrentPosition();
-      latitude = pos.latitude;
-      longitude = pos.longitude;
-      locationLabel = "Current Location";
+      double latitude = pos.latitude;
+      double longitude = pos.longitude;
+      locationLabel = await _repo.getCityName(latitude, longitude);
 
       await _loadAll(latitude!, longitude!);
     } catch (e) {
@@ -50,13 +49,10 @@ class WeatheriaViewModel extends ChangeNotifier {
       notifyListeners();
       weatherData = await _repo.fetchCurrentWeather(lat, lon);
 
-      await _repo.saveCache(
-        weatherData: weatherData!,
-      );
+      await _repo.saveCache(weatherData: weatherData!);
       appStatus = AppStatus.success;
       notifyListeners();
-
-    }catch(e){
+    } catch (e) {
       appStatus = AppStatus.error;
       errorMessage = e.toString();
       notifyListeners();
