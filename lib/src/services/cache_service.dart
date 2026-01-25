@@ -21,6 +21,8 @@ class CacheService {
     box.put("timestamp", DateTime.now().toIso8601String());
   }
 
+
+
   Future<Map<String, dynamic>> loadAll() async {
     final box = await _box();
 

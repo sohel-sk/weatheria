@@ -17,7 +17,7 @@ class LocationSelect extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          /// 🔄 CURRENT LOCATION TOGGLE
+          // CURRENT LOCATION TOGGLE
           SwitchListTile(
             title: const Text("Current Location"),
             value: vm.locationMode == LocationMode.gps,
@@ -29,19 +29,34 @@ class LocationSelect extends StatelessWidget {
             },
           ),
 
+
           const Divider(),
 
-          /// 📍 CURRENTLY SELECTED LOCATION
-          if (vm.locationMode == LocationMode.manual)
-            ListTile(
-              leading: const Icon(Icons.location_on),
-              title: Text(vm.locationLabel),
-              trailing: const Icon(Icons.check),
+          
+          if (vm.savedLocations.isEmpty)
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text("No saved locations"),
             ),
 
+          ...vm.savedLocations.map((place) {
+            return ListTile(
+              leading: const Icon(Icons.location_on),
+              title: Text(place.name),
+              subtitle: Text(place.address),
+              trailing: vm.locationLabel == place.name
+                  ? const Icon(Icons.check)
+                  : null,
+              onTap: () {
+                vm.selectPlace(place);
+                Navigator.pop(context);
+              },
+            );
+          }),
+
           const Divider(),
 
-          /// ➕ ADD NEW LOCATION
+          
           ListTile(
             leading: const Icon(Icons.add),
             title: const Text("Add new location"),

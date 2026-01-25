@@ -12,7 +12,9 @@ class WeatheriaViewModel extends ChangeNotifier {
   AppStatus appStatus = AppStatus.idle;
   String? errorMessage;
 
-  LocationMode locationMode = LocationMode.manual;
+  /// 🔑 SOURCE OF TRUTH
+  LocationMode locationMode = LocationMode.gps;
+
   String locationLabel = "Current Location";
   double? latitude;
   double? longitude;
@@ -21,35 +23,32 @@ class WeatheriaViewModel extends ChangeNotifier {
   List<HourlyForecast> hourly = [];
   List<DailyForecast> daily = [];
 
-  bool isSeearching = false;
+  bool isSearching = false;
   List<PlaceModel> places = [];
+
+  final List<PlaceModel> savedLocations = [];
+
+  bool _alreadySaved(PlaceModel place) {
+    return savedLocations.any((p) => p.lat == place.lat && p.lng == place.lng);
+  }
+
+  // ================= GPS FLOW =================
 
   Future<void> loadByGPS() async {
     try {
-      appStatus = AppStatus.loading;
       locationMode = LocationMode.gps;
+      appStatus = AppStatus.loading;
       notifyListeners();
 
       final pos = await _repo.getCurrentPosition();
-      double latitude = pos.latitude;
-      double longitude = pos.longitude;
-      locationLabel = await _repo.getCityName(latitude, longitude);
+
+      latitude = pos.latitude;
+      longitude = pos.longitude;
+
+      locationLabel = await _repo.getCityName(latitude!, longitude!);
 
       await _loadAll(latitude!, longitude!);
-    } catch (e) {
-      appStatus = AppStatus.error;
-      errorMessage = e.toString();
-      notifyListeners();
-    }
-  }
 
-  Future<void> _loadAll(double lat, double lon) async {
-    try {
-      appStatus = AppStatus.loading;
-      notifyListeners();
-      weatherData = await _repo.fetchCurrentWeather(lat, lon);
-
-      await _repo.saveCache(weatherData: weatherData!);
       appStatus = AppStatus.success;
       notifyListeners();
     } catch (e) {
@@ -57,5 +56,77 @@ class WeatheriaViewModel extends ChangeNotifier {
       errorMessage = e.toString();
       notifyListeners();
     }
+  }
+
+  // ================= MANUAL LOCATION FLOW =================
+
+  Future<void> selectPlace(PlaceModel place) async {
+    try {
+      locationMode = LocationMode.manual;
+      appStatus = AppStatus.loading;
+      notifyListeners();
+
+      if (!_alreadySaved(place)) {
+        savedLocations.add(place);
+      }
+
+      latitude = place.lat;
+      longitude = place.lng;
+      locationLabel = place.name;
+
+      await _loadAll(latitude!, longitude!);
+
+      appStatus = AppStatus.success;
+      notifyListeners();
+    } catch (e) {
+      appStatus = AppStatus.error;
+      errorMessage = e.toString();
+      notifyListeners();
+    }
+  }
+
+  // ================= CORE DATA LOADER =================
+
+  Future<void> _loadAll(double lat, double lon) async {
+    weatherData = await _repo.fetchCurrentWeather(lat, lon);
+    daily = await _repo.fetchDailyForecast(lat, lon);
+
+    await _repo.saveCache(weatherData: weatherData!);
+  }
+
+  // ================= SEARCH =================
+
+  Future<void> searchLocation(String query) async {
+    if (query.isEmpty) {
+      places = [];
+      notifyListeners();
+      return;
+    }
+
+    try {
+      isSearching = true;
+      notifyListeners();
+
+      places = await _repo.searchPlaces(query);
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isSearching = false;
+      notifyListeners();
+    }
+  }
+
+  // ================= REFRESH (IMPORTANT) =================
+
+  Future<void> refresh() async {
+    if (latitude == null || longitude == null) return;
+
+    appStatus = AppStatus.loading;
+    notifyListeners();
+
+    await _loadAll(latitude!, longitude!);
+
+    appStatus = AppStatus.success;
+    notifyListeners();
   }
 }
