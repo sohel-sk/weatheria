@@ -11,7 +11,7 @@ class DailyForecastCard extends StatelessWidget {
   Widget _buildForecastItem(DailyForecast forecast) {
     final dayName = DateFormat.E().format(forecast.date);
 
-    final iconUrl = "${forecast.iconUrl}_48.png";
+    final iconUrl = "${forecast.iconUrl}_dark.png";
 
     return SizedBox(
       width: 90,
@@ -28,10 +28,10 @@ class DailyForecastCard extends StatelessWidget {
               /// 🌤 API ICON
               Image.network(
                 iconUrl,
-                width: 36,
-                height: 36,
+                width: 28,
+                height: 28,
                 errorBuilder: (_, __, ___) =>
-                    const Icon(Icons.wb_cloudy, color: Colors.white),
+                    const Icon(Icons.wb_cloudy, color: Colors.white,size: 28,),
               ),
 
               const SizedBox(height: 8),

@@ -10,7 +10,7 @@ class HourlyForecastCard extends StatelessWidget {
 
   Widget _buildHourItem(HourlyForecast forecast) {
     final timeLabel = DateFormat.j().format(forecast.time);
-    final iconUrl = "${forecast.iconUrl}_48.png";
+    final iconUrl = "${forecast.iconUrl}_dark.png";
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -26,8 +26,8 @@ class HourlyForecastCard extends StatelessWidget {
           /// 🌤 API ICON
           Image.network(
             iconUrl,
-            width: 32,
-            height: 32,
+            width: 28,
+            height: 28,
             errorBuilder: (_, __, ___) =>
                 const Icon(Icons.wb_cloudy),
           ),
