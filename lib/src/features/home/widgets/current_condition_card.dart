@@ -51,7 +51,6 @@ class CurrentConditionsCard extends StatelessWidget {
     final vm = context.watch<WeatheriaViewModel>();
     final weather = vm.weatherData;
 
-    // 🔒 SAFE GUARD — prevents rebuild crashes
     if (weather == null ) {
       return const SizedBox();
     }
@@ -74,7 +73,7 @@ class CurrentConditionsCard extends StatelessWidget {
           children: [
             _item(
               'AQI',
-              '114', // e.g. "Good", "Moderate"
+              '114', 
               Icons.safety_check_rounded,
             ),
             _item(
@@ -99,7 +98,7 @@ class CurrentConditionsCard extends StatelessWidget {
             ),
             _item(
               'Dew Point',
-              '12°',
+              '${weather.dewPoint}°',
               Icons.water_drop,
             ),
           ],

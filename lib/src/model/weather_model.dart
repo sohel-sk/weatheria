@@ -26,6 +26,8 @@ class WeatherModel {
   final int visibility;
   @HiveField(10)
   final bool isDaytime;
+  @HiveField(11)
+  final double dewPoint;
 
   WeatherModel({
     required this.description,
@@ -39,5 +41,6 @@ class WeatherModel {
     required this.windDirection,
     required this.visibility,
     required this.isDaytime,
+    required this.dewPoint,
   });
 }

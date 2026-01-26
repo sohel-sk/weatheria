@@ -39,9 +39,24 @@ class WeatheriaRepository {
   Future fetchHourlyForecast(double lat, double lon) =>
       _weatherService.fetchHourlyForecast(lat: lat, lng: lon);
 
-  Future saveCache({required WeatherModel weatherData,required List<DailyForecast> daily,required List<HourlyForecast> hourly}) => _cache.saveAll(
-    weather: weatherData,
-    daily: daily,
-    hourly: hourly,
+  Future saveCache({
+    required WeatherModel weatherData,
+    required List<DailyForecast> daily,
+    required List<HourlyForecast> hourly,
+  }) => _cache.saveAll(weather: weatherData, daily: daily, hourly: hourly);
+
+  Future loadLocationState() => _cache.loadLocationState();
+  Future saveLocationState({
+    required String locationMode,
+    required double lat,
+    required double lon,
+    required String label,
+    required List<PlaceModel> savedLocations,
+  }) => _cache.saveLocationState(
+    locationMode: locationMode,
+    lat: lat,
+    lon: lon,
+    label: label,
+    savedLocations: savedLocations,
   );
 }

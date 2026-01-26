@@ -69,7 +69,6 @@ class WeatherService {
     required double lon,
   }) async {
     try {
-      // 🔄 Run APIs in parallel (FASTER)
       final results = await Future.wait([
         fetchCurrentConditions(lat: lat, lon: lon),
         fetchDailyForecast(lat: lat, lon: lon),
@@ -79,7 +78,7 @@ class WeatherService {
       return WeatherBundle(
         current: results[0] as WeatherModel,
         daily: results[1] as List<DailyForecast>,
-        hourly: results[2] as List<HourlyForecast>, // can be added later
+        hourly: results[2] as List<HourlyForecast>, 
       );
     } catch (e) {
       throw Exception("Error fetching all weather data: $e");
@@ -170,6 +169,7 @@ class WeatherService {
         windDirection: data['wind']['direction']['cardinal'],
         visibility: data['visibility']['distance'],
         isDaytime: data['isDaytime'],
+        dewPoint: data['dewPoint']['degrees'].toDouble(),
       );
     } on Exception catch (e) {
       // TODO

@@ -15,7 +15,7 @@ class WeatherHeader extends StatelessWidget {
       return const SizedBox(); // avoids flicker during loading
     }
 
-    final iconUrl = "${weather.iconUrl}_64.png";
+    final iconUrl = "${weather.iconUrl}.png";
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +31,6 @@ class WeatherHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// 🌤 API ICON
             Image.network(
               iconUrl,
               width: 48,
