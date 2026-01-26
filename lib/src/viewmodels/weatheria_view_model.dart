@@ -90,8 +90,13 @@ class WeatheriaViewModel extends ChangeNotifier {
   Future<void> _loadAll(double lat, double lon) async {
     weatherData = await _repo.fetchCurrentWeather(lat, lon);
     daily = await _repo.fetchDailyForecast(lat, lon);
+    hourly = await _repo.fetchHourlyForecast(lat, lon);
 
-    await _repo.saveCache(weatherData: weatherData!);
+    if (daily.isEmpty || weatherData == null || hourly.isEmpty) {
+      throw Exception("not able to fetch data in ViewModel");
+    }
+
+    await _repo.saveCache(weatherData: weatherData!,hourly: hourly,daily: daily);
   }
 
   // ================= SEARCH =================

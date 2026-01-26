@@ -1,10 +1,11 @@
+import 'package:weatheria/src/model/daily_forecast_model.dart';
+import 'package:weatheria/src/model/hourly_forecast_model.dart';
 import 'package:weatheria/src/model/place_model.dart';
 import 'package:weatheria/src/model/weather_model.dart';
 import 'package:weatheria/src/services/cache_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weatheria/src/services/location_service.dart';
 import 'package:weatheria/src/services/places_service.dart';
-
 
 import '../services/weather_service.dart';
 
@@ -19,7 +20,7 @@ class WeatheriaRepository {
   }
 
   Future fetchWeather(double lat, double lng) {
-    return _weatherService.fetchAll(lat:lat,lon: lng);
+    return _weatherService.fetchAll(lat: lat, lon: lng);
   }
 
   Future<Position> getCurrentPosition() async {
@@ -32,12 +33,15 @@ class WeatheriaRepository {
   Future fetchCurrentWeather(double lat, double lon) =>
       _weatherService.fetchCurrentConditions(lat: lat, lon: lon);
 
-  Future getCityName(double lat, double log) =>
-      _locationService.getCityFromCoordinates(lat, log);
+  Future getCityName(double lat, double lon) =>
+      _locationService.getCityFromCoordinates(lat, lon);
 
-  Future saveCache({required WeatherModel weatherData}) => _cache.saveAll(
+  Future fetchHourlyForecast(double lat, double lon) =>
+      _weatherService.fetchHourlyForecast(lat: lat, lng: lon);
+
+  Future saveCache({required WeatherModel weatherData,required List<DailyForecast> daily,required List<HourlyForecast> hourly}) => _cache.saveAll(
     weather: weatherData,
-    daily: List.empty(),
-    hourly: List.empty(),
+    daily: daily,
+    hourly: hourly,
   );
 }

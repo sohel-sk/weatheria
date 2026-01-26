@@ -73,12 +73,13 @@ class WeatherService {
       final results = await Future.wait([
         fetchCurrentConditions(lat: lat, lon: lon),
         fetchDailyForecast(lat: lat, lon: lon),
+        fetchHourlyForecast(lat: lat, lng: lon),
       ]);
 
       return WeatherBundle(
         current: results[0] as WeatherModel,
         daily: results[1] as List<DailyForecast>,
-        hourly: const [], // can be added later
+        hourly: results[2] as List<HourlyForecast>, // can be added later
       );
     } catch (e) {
       throw Exception("Error fetching all weather data: $e");

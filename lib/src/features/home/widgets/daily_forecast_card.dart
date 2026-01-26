@@ -1,24 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
-class DailyForecast extends StatelessWidget {
-  const DailyForecast({super.key});
+import '../../../viewmodels/weatheria_view_model.dart';
+import '../../../model/daily_forecast_model.dart';
 
-  Widget _buildForecastItem(String day, IconData icon, String tempRange) {
-    return Card(
-      color: const Color.fromARGB(255, 49, 52, 56),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Text(day),
-            const SizedBox(height: 8),
-            Icon(icon),
-            const SizedBox(height: 8),
-            Text(tempRange),
-          ],
+class DailyForecastCard extends StatelessWidget {
+  const DailyForecastCard({super.key});
+
+  Widget _buildForecastItem(DailyForecast forecast) {
+    final dayName = DateFormat.E().format(forecast.date);
+
+    final iconUrl = "${forecast.iconUrl}_48.png";
+
+    return SizedBox(
+      width: 90,
+      child: Card(
+        color: const Color.fromARGB(255, 49, 52, 56),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              Text(dayName, style: const TextStyle(color: Colors.white)),
+              const SizedBox(height: 8),
+
+              /// 🌤 API ICON
+              Image.network(
+                iconUrl,
+                width: 36,
+                height: 36,
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.wb_cloudy, color: Colors.white),
+              ),
+
+              const SizedBox(height: 8),
+              Text(
+                '${forecast.maxTemp.round()}° / ${forecast.minTemp.round()}°',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -26,46 +48,33 @@ class DailyForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<WeatheriaViewModel>();
+    final daily = vm.daily;
+
+    if (daily.isEmpty) {
+      return const SizedBox();
+    }
+
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
-            children: [
-              Row(
-                children: const [
-                  Text(
-                    textAlign: TextAlign.left,
-                    "6-Day Forecast",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+          children: [
+            const Text(
+              "6-Day Forecast",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: daily.take(6).map(_buildForecastItem).toList(),
               ),
-              const SizedBox(height: 12),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildForecastItem("Sun", Icons.wb_sunny, "26° / 18°"),
-                    _buildForecastItem("Mon", Icons.cloudy_snowing, "26° / 18°"),
-                    _buildForecastItem("Tue", Icons.cloud, "26° / 18°"),
-                    _buildForecastItem("Wed", Icons.sunny_snowing, "26° / 18°"),
-                    _buildForecastItem("Thu", Icons.wb_sunny, "26° / 18°"),
-                    _buildForecastItem("Fri", Icons.cloud_sync, "26° / 18°"),
-                    _buildForecastItem("Sat", Icons.wb_sunny, "26° / 18°"),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }
