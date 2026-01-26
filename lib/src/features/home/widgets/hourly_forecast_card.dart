@@ -23,7 +23,6 @@ class HourlyForecastCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          /// 🌤 API ICON
           Image.network(
             iconUrl,
             width: 28,

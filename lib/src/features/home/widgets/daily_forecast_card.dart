@@ -25,7 +25,6 @@ class DailyForecastCard extends StatelessWidget {
               Text(dayName, style: const TextStyle(color: Colors.white)),
               const SizedBox(height: 8),
 
-              /// 🌤 API ICON
               Image.network(
                 iconUrl,
                 width: 28,
