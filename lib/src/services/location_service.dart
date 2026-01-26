@@ -37,7 +37,7 @@ class LocationService {
 
         return '$city, $state';
       }
-      return null; // No placemarks found
+      return null; 
     } catch (e) {
       print('Error getting city: $e');
       return null;

@@ -17,7 +17,7 @@ class LocationSelect extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          // CURRENT LOCATION TOGGLE
+          // current location toggle
           SwitchListTile(
             title: const Text("Current Location"),
             value: vm.locationMode == LocationMode.gps,
